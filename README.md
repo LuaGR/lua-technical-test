@@ -163,11 +163,11 @@ alembic upgrade head
 uvicorn main:app --reload
 ```
 
-### 4.2 Modelo de Dominio: Survey (Entidad)
+### 4.2 Modelo de Dominio
+
+#### 4.2.1 Survey (Entidad)
 
 La entidad `Survey` representa el núcleo del dominio para el feature de encuestas. En Clean Architecture, una entidad encapsula los datos y la lógica de negocio relevante, independiente de frameworks, bases de datos o detalles de infraestructura.
-
-#### ¿Por qué estructuramos así la entidad?
 
 - **Atributos con significado de dominio:**  
   - `id`: Identificador único, fundamental para la identidad de la encuesta.
@@ -199,6 +199,40 @@ La entidad `Survey` representa el núcleo del dominio para el feature de encuest
 
 En resumen:  
 La entidad `Survey` es el corazón del feature de encuestas. Modela los datos y reglas esenciales, es independiente de la tecnología, y está lista para crecer y adaptarse a nuevas necesidades del negocio.
+
+#### 4.2.2 Question (Entidad)
+
+La entidad `Question` representa el núcleo del dominio para el feature de preguntas dentro de una encuesta. En Clean Architecture, esta entidad encapsula los datos y la lógica de negocio relevante para cada pregunta, manteniéndose independiente de frameworks y detalles técnicos.
+
+- **Atributos con significado de dominio:**  
+  - `id`: Identificador único de la pregunta.
+  - `survey_id`: Referencia a la encuesta a la que pertenece.
+  - `text`: Texto de la pregunta.
+  - `question_type`: Enum (`QuestionType`) para el tipo de pregunta (text, single_choice, multiple_choice).
+  - `options`: Lista de opciones asociadas (solo para preguntas de tipo choice).
+  - `required`: Indica si la pregunta es obligatoria.
+
+- **Métodos de negocio:**  
+  - `add_option`: Permite agregar opciones a la pregunta, pero solo si es de tipo choice. Encapsula la regla de negocio que restringe opciones a ciertos tipos de pregunta.
+
+- **Independencia de frameworks:**  
+  La entidad no depende de FastAPI, Pydantic, SQLAlchemy ni ningún framework. Esto permite testear la lógica de negocio en aislamiento y migrar a otros frameworks sin reescribir el dominio.
+
+- **Escalabilidad y mantenibilidad:**  
+  Si el negocio evoluciona (por ejemplo, agregas lógica para validaciones, tipos de pregunta adicionales, etc.), lo haces aquí, sin tocar la infraestructura. Facilita la extensión: puedes agregar más métodos o atributos sin romper el resto del sistema.
+
+- **Claridad y robustez:**  
+  Usar Enums para el tipo de pregunta evita errores de tipo y facilita migraciones/queries. Los métodos de negocio encapsulan reglas, evitando que la lógica se disperse por el código.
+
+**Justificación arquitectónica:**  
+- Separa el “qué” del negocio del “cómo” de la tecnología.
+- Permite que el dominio evolucione sin depender de detalles técnicos.
+- Facilita el testing unitario y la extensión futura.
+- Hace explícitas las reglas y restricciones del negocio.
+- Alinea el código con el lenguaje del negocio y los stakeholders.
+
+En resumen:  
+La entidad `Question` es esencial para el feature de encuestas, modelando los datos y reglas de cada pregunta, y está lista para crecer y adaptarse a nuevas necesidades del negocio.
 
 ---
 
@@ -239,8 +273,8 @@ Editar `.env` en frontend y poner tu key de OpenWeatherMap (tengo fallback prepa
 
 ### Backend
 
-- [ ] Crear estructura de carpetas feature-based (surveys, questions, etc.) siguiendo Clean + Screaming Architecture.
-- [ ] Implementar modelos de dominio y enums en surveys y questions.
+- [X] Crear estructura de carpetas feature-based (surveys, questions, etc.) siguiendo Clean + Screaming Architecture.
+- [X] Implementar modelos de dominio y enums en surveys y questions.
 - [ ] Desarrollar casos de uso (application) para creación de encuestas y preguntas.
 - [ ] Implementar repositorios y acceso a PostgreSQL en infrastructure.
 - [ ] Crear endpoints HTTP en la carpeta api (routers FastAPI).
