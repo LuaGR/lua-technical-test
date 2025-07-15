@@ -75,7 +75,9 @@ Este repo es un **monorepo NX** que contiene dos apps independientes:
 
 ---
 
-## 4. Backend: Requerimientos y Setup
+## 4. Backend
+
+### 4.1 Requerimientos y Setup
 
 ### Decisiones en Endpoints
 
@@ -160,6 +162,43 @@ pip install -r requirements.txt
 alembic upgrade head
 uvicorn main:app --reload
 ```
+
+### 4.2 Modelo de Dominio: Survey (Entidad)
+
+La entidad `Survey` representa el núcleo del dominio para el feature de encuestas. En Clean Architecture, una entidad encapsula los datos y la lógica de negocio relevante, independiente de frameworks, bases de datos o detalles de infraestructura.
+
+#### ¿Por qué estructuramos así la entidad?
+
+- **Atributos con significado de dominio:**  
+  - `id`: Identificador único, fundamental para la identidad de la encuesta.
+  - `title` y `description`: Información principal que define la encuesta.
+  - `created_at`: Permite auditar y ordenar encuestas, útil para reportes y lógica temporal.
+  - `status`: Usamos un Enum (`SurveyStatus`) para representar el estado de la encuesta (borrador, activa, cerrada). Esto previene errores y facilita validaciones.
+  - `questions`: Lista de preguntas asociadas, modelando la relación natural entre encuesta y preguntas.
+
+- **Métodos de negocio:**  
+  - `add_question`: Permite agregar preguntas a la encuesta, reflejando el flujo real de creación.
+  - `activate`: Cambia el estado a "activa", pero solo si hay preguntas, asegurando integridad del negocio.
+  - `close`: Permite cerrar la encuesta, cambiando su estado.
+
+- **Independencia de frameworks:**  
+  La entidad no depende de FastAPI, Pydantic, SQLAlchemy ni ningún framework. Esto permite testear la lógica de negocio en aislamiento y migrar a otros frameworks sin reescribir el dominio.
+
+- **Escalabilidad y mantenibilidad:**  
+  Si el negocio evoluciona (por ejemplo, agregas lógica para duplicar encuestas, agregar colaboradores, etc.), lo haces aquí, sin tocar la infraestructura. Facilita la extensión: puedes agregar más métodos o atributos sin romper el resto del sistema.
+
+- **Claridad y robustez:**  
+  Usar Enums para estados y tipos de pregunta evita errores de tipo y facilita migraciones/queries. Los métodos de negocio encapsulan reglas, evitando que la lógica se disperse por el código.
+
+**Justificación arquitectónica:**  
+- Separa el “qué” del negocio del “cómo” de la tecnología.
+- Permite que el dominio evolucione sin depender de detalles técnicos.
+- Facilita el testing unitario y la extensión futura.
+- Hace explícitas las reglas y restricciones del negocio.
+- Alinea el código con el lenguaje del negocio y los stakeholders.
+
+En resumen:  
+La entidad `Survey` es el corazón del feature de encuestas. Modela los datos y reglas esenciales, es independiente de la tecnología, y está lista para crecer y adaptarse a nuevas necesidades del negocio.
 
 ---
 
