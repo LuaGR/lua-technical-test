@@ -4,6 +4,22 @@
 
 ---
 
+## Escalabilidad Futura
+
+La arquitectura y estructura del proyecto están pensadas para facilitar la **escalabilidad** y el crecimiento a futuro. Algunas decisiones clave:
+
+- **Monorepo NX:** Permite sumar nuevas apps (microservicios, widgets, libs compartidas) sin perder control ni duplicar esfuerzos.
+- **Carpetas por feature (Screaming Architecture):** Si el dominio crece, se pueden agregar nuevas features como `/users`, `/responses`, `/analytics`, etc., manteniendo el código organizado y desacoplado.
+- **Clean Architecture:** Separar en capas (domain, application, infrastructure, api) permite cambiar frameworks, bases de datos, o integrar nuevas tecnologías sin reescribir la lógica de negocio.
+- **Repository Pattern:** Facilita migrar entre sistemas de persistencia (ej: de PostgreSQL a MongoDB) o agregar cachés/distribución.
+- **Frontend Atomic Design:** Permite escalar el widget a una app más grande, sumar nuevas vistas, o reutilizar componentes en otros proyectos.
+- **Testing y CI/CD centralizados:** Listo para escalar el equipo y mantener calidad en cada nueva funcionalidad.
+
+La base está pensada para que, aunque el producto crezca en usuarios, features o complejidad, el código siga siendo mantenible y extensible.
+
+
+---
+
 ## 1. Overview
 
 Este repo es un **monorepo NX** que contiene dos apps independientes:
@@ -61,6 +77,14 @@ Este repo es un **monorepo NX** que contiene dos apps independientes:
 
 ## 4. Backend: Requerimientos y Setup
 
+### Decisiones en Endpoints
+
+- **Encuestas sin preguntas:** Permitir crear encuestas vacías da flexibilidad y mejora la experiencia de usuario. Es común definir primero la encuesta y luego agregar preguntas en pasos separados, como hacen herramientas profesionales. Esto facilita el trabajo iterativo y colaborativo.
+- **Fecha de creación:** Se almacena automáticamente al crear la encuesta para facilitar auditoría y orden cronológico.
+- **Tipos de pregunta como Enum:** Facilita validaciones, migraciones y queries, y evita errores de tipo.
+- **Validación de existencia de encuesta:** Antes de agregar una pregunta, se valida que la encuesta exista para evitar referencias inválidas.
+- **Opciones solo en preguntas choice:** Validado tanto en la API como en la base de datos para robustez y consistencia.
+
 - **Stack:** FastAPI, PostgreSQL, Alembic (migraciones), Pydantic
 - **Endpoints:**
   - `POST /surveys` - Crear encuesta
@@ -68,6 +92,62 @@ Este repo es un **monorepo NX** que contiene dos apps independientes:
   - `POST /questions/{id}/options` - Agregar opción (solo para choice)
 - **Testing:** Pytest + FastAPI test client
 - **Migraciones:** Alembic (ver comandos abajo)
+
+### Ejemplo de uso de la API
+
+**Crear encuesta**
+```json
+POST /surveys
+{
+  "title": "Satisfacción del servicio",
+  "description": "Queremos conocer tu opinión"
+}
+```
+
+**Agregar pregunta**
+```json
+POST /surveys/{survey_id}/questions
+{
+  "text": "¿Cómo calificarías nuestro servicio?",
+  "question_type": "single_choice"
+}
+```
+
+**Agregar opción a pregunta choice**
+```json
+POST /questions/{question_id}/options
+{
+  "text": "Muy satisfecho"
+}
+```
+
+### Ejemplo de uso de la API
+
+**Crear encuesta**
+```json
+POST /surveys
+{
+  "title": "Satisfacción del servicio",
+  "description": "Queremos conocer tu opinión"
+}
+```
+
+**Agregar pregunta**
+```json
+POST /surveys/{survey_id}/questions
+{
+  "text": "¿Cómo calificarías el servicio?",
+  "question_type": "single_choice"
+}
+```
+
+**Agregar opción a pregunta choice**
+```json
+POST /questions/{question_id}/options
+{
+  "text": "Muy satisfecho"
+}
+```
 
 ### Setup
 
