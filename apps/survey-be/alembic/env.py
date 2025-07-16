@@ -1,11 +1,15 @@
+import sys
+import os
 from logging.config import fileConfig
+sys.path.append(os.path.join(os.path.dirname(__file__), '..', 'src'))
 
 from sqlalchemy import engine_from_config
 from sqlalchemy import pool
-
 from alembic import context
 
-from src.survey.infrastructure.survey_model import Base
+from survey.infrastructure.survey_model import Base
+from question.infrastructure.question_model import QuestionModel
+
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

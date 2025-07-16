@@ -185,7 +185,8 @@ La entidad `Survey` representa el núcleo del dominio para el feature de encuest
 
 - **Atributos con significado de dominio:**  
   - `id`: Identificador único, fundamental para la identidad de la encuesta.
-  - `title` y `description`: Información principal que define la encuesta.
+  - `title`: Información principal que define la encuesta.
+  - `description`: (opcional) Texto descriptivo de la encuesta. Es opcional para dar flexibilidad al usuario y permitir la creación rápida de encuestas, alineándose con la experiencia de usuario de herramientas profesionales y evitando forzar datos irrelevantes.
   - `created_at`: Permite auditar y ordenar encuestas, útil para reportes y lógica temporal.
   - `status`: Usamos un Enum (`SurveyStatus`) para representar el estado de la encuesta (borrador, activa, cerrada). Esto previene errores y facilita validaciones.
   - `questions`: Lista de preguntas asociadas, modelando la relación natural entre encuesta y preguntas.
