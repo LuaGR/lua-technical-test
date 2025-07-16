@@ -5,7 +5,7 @@ from typing import Optional
 class Survey:
     def __init__(
         self,
-        id: int,
+        id: Optional[ int ],
         title: str,
         description: str = "",
         created_at: Optional[ datetime ] = None,

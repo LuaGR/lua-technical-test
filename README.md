@@ -12,6 +12,7 @@ La arquitectura y estructura del proyecto están pensadas para facilitar la **es
 - **Carpetas por feature (Screaming Architecture):** Si el dominio crece, se pueden agregar nuevas features como `/users`, `/responses`, `/analytics`, etc., manteniendo el código organizado y desacoplado.
 - **Clean Architecture:** Separar en capas (domain, application, infrastructure, api) permite cambiar frameworks, bases de datos, o integrar nuevas tecnologías sin reescribir la lógica de negocio.
 - **Repository Pattern:** Facilita migrar entre sistemas de persistencia (ej: de PostgreSQL a MongoDB) o agregar cachés/distribución.
+- **Docker para desarrollo reproducible:** Permite levantar la base de datos y otros servicios de manera consistente en cualquier entorno, facilitando la colaboración, el testing y la portabilidad del proyecto. Esto asegura que cualquier revisor o desarrollador pueda levantar el entorno localmente sin fricciones ni dependencias externas.
 - **Frontend Atomic Design:** Permite escalar el widget a una app más grande, sumar nuevas vistas, o reutilizar componentes en otros proyectos.
 - **Testing y CI/CD centralizados:** Listo para escalar el equipo y mantener calidad en cada nueva funcionalidad.
 
@@ -153,12 +154,25 @@ POST /questions/{question_id}/options
 
 ### Setup
 
+#### Levantar la base de datos con Docker
+
+Asegúrate de tener Docker instalado. Desde la raíz del proyecto, ejecuta:
+
+```bash
+docker-compose up -d
+```
+
+Esto creará un contenedor de PostgreSQL accesible en `localhost:5432` con la base de datos `survey_db`, usuario `postgres` y contraseña `postgres`.
+
+#### Configurar y correr el backend
+
 ```bash
 cd apps/backend
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
-# Configurar DB en .env
+# Configurar la URL de la base de datos en .env o alembic.ini:
+# postgresql://postgres:postgres@localhost:5432/survey_db
 alembic upgrade head
 uvicorn main:app --reload
 ```
