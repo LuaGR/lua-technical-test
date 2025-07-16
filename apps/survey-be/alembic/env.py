@@ -9,7 +9,7 @@ from alembic import context
 
 from survey.infrastructure.survey_model import Base
 from question.infrastructure.question_model import QuestionModel
-
+from question.infrastructure.option_model import OptionModel
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.

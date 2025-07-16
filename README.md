@@ -292,8 +292,6 @@ Editar `.env` en frontend y poner tu key de OpenWeatherMap (tengo fallback prepa
 
 ---
 
----
-
 ## 7. Tasks y Checklist
 
 ### Backend
