@@ -12,3 +12,8 @@ class QuestionModel(Base):
     required = Column(Boolean, default=False, nullable=False)
 
     survey = relationship("SurveyModel", back_populates="questions")
+    options = relationship(
+        "OptionModel",
+        back_populates="question",
+        cascade="all, delete-orphan"
+    )
