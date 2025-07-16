@@ -224,7 +224,7 @@ La entidad `Question` representa el núcleo del dominio para el feature de pregu
   - `survey_id`: Referencia a la encuesta a la que pertenece.
   - `text`: Texto de la pregunta.
   - `question_type`: Enum (`QuestionType`) para el tipo de pregunta (text, single_choice, multiple_choice).
-  - `options`: Lista de opciones asociadas (solo para preguntas de tipo choice).
+  - `options`: Lista de opciones asociadas a la pregunta (solo para preguntas de tipo choice). Cada opción es una entidad propia y se almacena en la tabla `options` para permitir flexibilidad, integridad y escalabilidad.
   - `required`: Indica si la pregunta es obligatoria.
 
 - **Métodos de negocio:**  
@@ -249,6 +249,10 @@ La entidad `Question` representa el núcleo del dominio para el feature de pregu
 En resumen:  
 La entidad `Question` es esencial para el feature de encuestas, modelando los datos y reglas de cada pregunta, y está lista para crecer y adaptarse a nuevas necesidades del negocio.
 
+#### 4.2.3 Option (Entidad)
+
+La entidad `Option` representa una posible respuesta para preguntas de tipo choice. Se modela como una entidad separada para facilitar la gestión, validación y escalabilidad de las opciones asociadas a cada pregunta.
+
 ---
 
 ### 4.3. Infraestructura y Persistencia
@@ -259,6 +263,9 @@ Para la persistencia, se utiliza SQLAlchemy como ORM. En la infraestructura, se 
   Se define en los modelos de infraestructura para permitir la navegación bidireccional entre encuestas y preguntas. Esto facilita acceder a todas las preguntas de una encuesta desde el modelo, mejora la expresividad del ORM y permite operaciones en cascada (por ejemplo, borrar todas las preguntas al eliminar una encuesta).  
   Esta relación inversa potencia la infraestructura y la integridad referencial, pero no acopla el dominio.
 
+- **Relación inversa Question-Option:**  
+  Se implementa una tabla `options` relacionada con `questions`, permitiendo la navegación bidireccional entre preguntas y sus opciones. Esto facilita acceder a todas las opciones de una pregunta desde el modelo, mejora la expresividad del ORM y permite operaciones en cascada (por ejemplo, borrar todas las opciones al eliminar una pregunta).  
+  Esta relación asegura flexibilidad, integridad referencial y escalabilidad en la gestión de las opciones asociadas a cada pregunta.
 ---
 
 ## 5. Frontend: Requerimientos y Setup
