@@ -250,6 +250,16 @@ La entidad `Question` es esencial para el feature de encuestas, modelando los da
 
 ---
 
+### 4.3. Infraestructura y Persistencia
+
+Para la persistencia, se utiliza SQLAlchemy como ORM. En la infraestructura, se implementa una relación inversa entre `SurveyModel` y `QuestionModel`:
+
+- **Relación inversa Survey-Question:**  
+  Se define en los modelos de infraestructura para permitir la navegación bidireccional entre encuestas y preguntas. Esto facilita acceder a todas las preguntas de una encuesta desde el modelo, mejora la expresividad del ORM y permite operaciones en cascada (por ejemplo, borrar todas las preguntas al eliminar una encuesta).  
+  Esta relación inversa potencia la infraestructura y la integridad referencial, pero no acopla el dominio.
+
+---
+
 ## 5. Frontend: Requerimientos y Setup
 
 - **Stack:** Vue 3, Composition API, Vite

@@ -7,7 +7,4 @@ class ListSurveysUseCase:
         self.repository = repository
 
     def execute(self) -> List[Survey]:
-        """
-        Retorna la lista de encuestas existentes.
-        """
         return self.repository.list_surveys()
