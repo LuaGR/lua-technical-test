@@ -1,4 +1,4 @@
-from typing import Optional, List
+from typing import Optional
 from sqlalchemy.orm import Session
 
 from ..domain.question_entity import Question
@@ -38,16 +38,3 @@ class QuestionRepository:
             question_type=QuestionType(question_model.question_type),
             required=question_model.required
         )
-
-    def list_by_survey(self, survey_id: int) -> List[Question]:
-        question_models = self.db.query(QuestionModel).filter(QuestionModel.survey_id == survey_id).all()
-        return [
-            Question(
-                id=q.id,
-                survey_id=q.survey_id,
-                text=q.text,
-                question_type=QuestionType(q.question_type),
-                required=q.required
-            )
-            for q in question_models
-        ]

@@ -21,8 +21,3 @@ class Question:
 
     def __repr__(self):
         return f"<Question id={self.id} text={self.text} type={self.question_type.value}>"
-
-    def add_option(self, option: Option):
-        if self.question_type not in [QuestionType.SINGLE_CHOICE, QuestionType.MULTIPLE_CHOICE]:
-            raise ValueError("Only choice type questions can have options.")
-        self.options.append(option)

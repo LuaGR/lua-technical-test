@@ -305,9 +305,9 @@ Editar `.env` en frontend y poner tu key de OpenWeatherMap (tengo fallback prepa
 
 - [X] Crear estructura de carpetas feature-based (surveys, questions, etc.) siguiendo Clean + Screaming Architecture.
 - [X] Implementar modelos de dominio y enums en surveys y questions.
-- [ ] Desarrollar casos de uso (application) para creación de encuestas y preguntas.
-- [ ] Implementar repositorios y acceso a PostgreSQL en infrastructure.
-- [ ] Crear endpoints HTTP en la carpeta api (routers FastAPI).
+- [X] Desarrollar casos de uso (application) para creación de encuestas y preguntas.
+- [X] Implementar repositorios y acceso a PostgreSQL en infrastructure.
+- [X] Crear endpoints HTTP en la carpeta api (routers FastAPI).
 - [ ] Agregar tests unitarios y de integración con Pytest.
 
 ### Frontend

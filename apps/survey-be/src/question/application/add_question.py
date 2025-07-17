@@ -1,4 +1,3 @@
-from typing import Optional
 from ..domain.question_entity import Question
 from ..domain.question_enums import QuestionType
 from ..infrastructure.question_repository import QuestionRepository

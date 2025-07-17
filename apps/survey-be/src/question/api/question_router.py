@@ -1,6 +1,5 @@
 from fastapi import APIRouter, HTTPException, status, Depends
 from pydantic import BaseModel
-from sqlalchemy.orm import Session
 
 from ..application.add_question import AddQuestionUseCase
 from ..domain.question_enums import QuestionType

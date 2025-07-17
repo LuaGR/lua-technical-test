@@ -1,31 +1,22 @@
-from typing import List, Optional
+from typing import List
 
 from fastapi import APIRouter, HTTPException, status, Depends
-from pydantic import BaseModel
-from sqlalchemy.orm import Session
-
 
 from survey.application.create_survey import CreateSurveyUseCase
 from survey.application.list_surveys import ListSurveysUseCase
 from infrastructure.dependencies import get_survey_repository
 from survey.application.get_survey_by_id import GetSurveyByIdUseCase
-from question.domain.question_enums import QuestionType
+from .survey_schema import (
+    SurveyCreateRequest,
+    SurveyResponse,
+    SurveyDetailResponse,
+    QuestionNestedResponse,
+    OptionNestedResponse)
 
 router = APIRouter(
     prefix="/surveys",
     tags=["surveys"],
 )
-
-class SurveyCreateRequest(BaseModel):
-    title: str
-    description: Optional[str] = ""
-
-class SurveyResponse(BaseModel):
-    id: int
-    title: str
-    description: str
-    created_at: str
-    status: str
 
 @router.post(
     "/",
@@ -73,27 +64,6 @@ def list_surveys(
         )
         for s in surveys
     ]
-
-class OptionNestedResponse(BaseModel):
-    id: int
-    question_id: int
-    text: str
-
-class QuestionNestedResponse(BaseModel):
-    id: int
-    survey_id: int
-    text: str
-    question_type: QuestionType
-    required: bool
-    options: List[OptionNestedResponse]
-
-class SurveyDetailResponse(BaseModel):
-    id: int
-    title: str
-    description: str
-    created_at: str
-    status: str
-    questions: List[QuestionNestedResponse]
 
 @router.get(
     "/{survey_id}",
