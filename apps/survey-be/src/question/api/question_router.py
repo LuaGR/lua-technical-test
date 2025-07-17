@@ -4,15 +4,7 @@ from sqlalchemy.orm import Session
 
 from ..application.add_question import AddQuestionUseCase
 from ..domain.question_enums import QuestionType
-from ..infrastructure.question_repository import QuestionRepository
-from survey.infrastructure.survey_repository import SurveyRepository
-from infrastructure.db import get_db
-
-def get_question_repository(db: Session = Depends(get_db)):
-    return QuestionRepository(db)
-
-def get_survey_repository(db: Session = Depends(get_db)):
-    return SurveyRepository(db)
+from infrastructure.dependencies import get_question_repository, get_survey_repository
 
 router = APIRouter(
     prefix="/surveys/{survey_id}/questions",
@@ -40,8 +32,8 @@ class QuestionResponse(BaseModel):
 def add_question(
     survey_id: int,
     body: QuestionCreateRequest,
-    question_repository: QuestionRepository = Depends(get_question_repository),
-    survey_repository: SurveyRepository = Depends(get_survey_repository)
+    question_repository = Depends(get_question_repository),
+    survey_repository = Depends(get_survey_repository)
 ):
     use_case = AddQuestionUseCase(question_repository)
     try:

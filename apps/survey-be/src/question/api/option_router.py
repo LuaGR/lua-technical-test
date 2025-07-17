@@ -3,9 +3,7 @@ from pydantic import BaseModel
 from sqlalchemy.orm import Session
 
 from ..application.add_option import AddOptionUseCase
-from ..infrastructure.option_repository import OptionRepository
-from ..infrastructure.question_repository import QuestionRepository
-from infrastructure.db import get_db
+from infrastructure.dependencies import get_option_repository, get_question_repository
 
 router = APIRouter(
     prefix="/questions/{question_id}/options",
@@ -20,12 +18,6 @@ class OptionResponse(BaseModel):
     question_id: int
     text: str
 
-def get_option_repository(db: Session = Depends(get_db)):
-    return OptionRepository(db)
-
-def get_question_repository(db: Session = Depends(get_db)):
-    return QuestionRepository(db)
-
 @router.post(
     "/",
     response_model=OptionResponse,
@@ -35,8 +27,8 @@ def get_question_repository(db: Session = Depends(get_db)):
 def add_option(
     question_id: int,
     body: OptionCreateRequest,
-    option_repository: OptionRepository = Depends(get_option_repository),
-    question_repository: QuestionRepository = Depends(get_question_repository)
+    option_repository = Depends(get_option_repository),
+    question_repository = Depends(get_question_repository)
 ):
     use_case = AddOptionUseCase(option_repository, question_repository)
     try:
