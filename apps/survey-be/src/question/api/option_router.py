@@ -1,21 +1,13 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from pydantic import BaseModel
 
 from ..application.add_option import AddOptionUseCase
 from infrastructure.dependencies import get_option_repository, get_question_repository
+from .option_schema import OptionCreateRequest, OptionResponse
 
 router = APIRouter(
     prefix="/questions/{question_id}/options",
     tags=["options"],
 )
-
-class OptionCreateRequest(BaseModel):
-    text: str
-
-class OptionResponse(BaseModel):
-    id: int
-    question_id: int
-    text: str
 
 @router.post(
     "/",
