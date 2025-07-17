@@ -18,4 +18,7 @@ class CreateSurveyUseCase:
             created_at=datetime.now(timezone.utc),
             status=SurveyStatus.DRAFT
         )
+        if not title or not title.strip():
+            raise ValueError("Survey title cannot be empty.")
+
         return self.repository.create(survey)
