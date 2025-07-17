@@ -335,8 +335,21 @@ Editar `.env` en frontend y poner tu key de OpenWeatherMap (tengo fallback prepa
 
 ### Frontend
 
-- [ ] Crear estructura de carpetas siguiendo Atomic Design.
+- [X] Crear estructura de carpetas siguiendo Atomic Design.
 - [ ] Implementar componente de input y botón para ciudad.
 - [ ] Desarrollar lógica de fetch de clima y fallback de API.
 - [ ] Mostrar feedback visual según temperatura.
+- [ ] Manejar loading y errores de forma visual y clara para el usuario.
+- [ ] Usar variables de entorno (`.env`) para la API key y configuraciones sensibles.
+- [ ] Tipar correctamente props, emits y lógica con TypeScript.
+- [ ] Asegurar responsividad del widget (adaptable a distintos tamaños de pantalla).
+- [ ] Seguir buenas prácticas de accesibilidad (a11y): etiquetas, roles, navegación por teclado.
+- [ ] Configurar y pasar linting (ESLint) y formateo automático (Prettier).
+- [ ] Asegurar que no haya errores de typecheck.
 - [ ] Agregar tests unitarios con Vitest y @vue/test-utils.
+- [ ] Documentar el frontend con un README propio (setup, scripts, testing).
+- [ ] Usar convenciones de nombres claras y consistentes para componentes y archivos.
+- [ ] Preparar el código para escalar a un store global (ej: Pinia) si el widget crece.
+- [ ] Comentar la lógica compleja o no trivial en el código.
+- [ ] (Opcional) Soporte para dark mode.
+- [ ] (Opcional) Preparar para internacionalización (i18n).
