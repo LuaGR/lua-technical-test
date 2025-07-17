@@ -1,26 +1,13 @@
 from fastapi import APIRouter, HTTPException, status, Depends
-from pydantic import BaseModel
 
 from ..application.add_question import AddQuestionUseCase
-from ..domain.question_enums import QuestionType
 from infrastructure.dependencies import get_question_repository, get_survey_repository
+from .question_schema import QuestionCreateRequest, QuestionResponse
 
 router = APIRouter(
     prefix="/surveys/{survey_id}/questions",
     tags=["questions"],
 )
-
-class QuestionCreateRequest(BaseModel):
-    text: str
-    question_type: QuestionType
-    required: bool = False
-
-class QuestionResponse(BaseModel):
-    id: int
-    survey_id: int
-    text: str
-    question_type: QuestionType
-    required: bool
 
 @router.post(
     "/",
@@ -45,6 +32,7 @@ def add_question(
         )
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))
+
     return QuestionResponse(
         id=question.id,
         survey_id=question.survey_id,
