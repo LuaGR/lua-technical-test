@@ -18,7 +18,6 @@ La arquitectura y estructura del proyecto están pensadas para facilitar la **es
 
 La base está pensada para que, aunque el producto crezca en usuarios, features o complejidad, el código siga siendo mantenible y extensible.
 
-
 ---
 
 ## 1. Overview
@@ -99,6 +98,7 @@ Este repo es un **monorepo NX** que contiene dos apps independientes:
 ### Ejemplo de uso de la API
 
 **Crear encuesta**
+
 ```json
 POST /surveys
 {
@@ -108,6 +108,7 @@ POST /surveys
 ```
 
 **Agregar pregunta**
+
 ```json
 POST /surveys/{survey_id}/questions
 {
@@ -117,34 +118,7 @@ POST /surveys/{survey_id}/questions
 ```
 
 **Agregar opción a pregunta choice**
-```json
-POST /questions/{question_id}/options
-{
-  "text": "Muy satisfecho"
-}
-```
 
-### Ejemplo de uso de la API
-
-**Crear encuesta**
-```json
-POST /surveys
-{
-  "title": "Satisfacción del servicio",
-  "description": "Queremos conocer tu opinión"
-}
-```
-
-**Agregar pregunta**
-```json
-POST /surveys/{survey_id}/questions
-{
-  "text": "¿Cómo calificarías el servicio?",
-  "question_type": "single_choice"
-}
-```
-
-**Agregar opción a pregunta choice**
 ```json
 POST /questions/{question_id}/options
 {
@@ -154,7 +128,7 @@ POST /questions/{question_id}/options
 
 ### Setup
 
-#### Levantar la base de datos con Docker
+#### 1. Levantar la base de datos con Docker
 
 Asegúrate de tener Docker instalado. Desde la raíz del proyecto, ejecuta:
 
@@ -164,18 +138,60 @@ docker-compose up -d
 
 Esto creará un contenedor de PostgreSQL accesible en `localhost:5432` con la base de datos `survey_db`, usuario `postgres` y contraseña `postgres`.
 
-#### Configurar y correr el backend
+---
 
-```bash
-cd apps/backend
-python -m venv venv
-source venv/bin/activate
-pip install -r requirements.txt
-# Configurar la URL de la base de datos en .env o alembic.ini:
-# postgresql://postgres:postgres@localhost:5432/survey_db
-alembic upgrade head
-uvicorn main:app --reload
-```
+#### 2. Configurar y correr el backend
+
+1. Ve a la carpeta del backend:
+
+   ```bash
+   cd apps/survey-be
+   ```
+
+2. Crea y activa el entorno virtual:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+3. Instala las dependencias:
+
+   ```bash
+   pip install -r requirements.txt
+   ```
+
+4. Configura la URL de la base de datos en `.env` (o verifica que esté correcta):
+
+   ```
+   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/survey_db
+   ```
+
+5. Aplica las migraciones para crear las tablas:
+
+   ```bash
+   alembic upgrade head
+   ```
+
+6. Inicia el servidor FastAPI:
+
+   - Si estás en `/apps/survey-be/`:
+     ```bash
+     uvicorn src.main:app --reload
+     ```
+   - O desde `/apps/survey-be/src/`:
+     ```bash
+     uvicorn main:app --reload
+     ```
+
+7. Accede a la documentación interactiva en [http://localhost:8000/docs](http://localhost:8000/docs)
+
+---
+
+**Notas:**
+
+- Asegúrate de tener Docker corriendo para la base de datos antes de iniciar el backend.
+- Si cambias la estructura de carpetas, ajusta los comandos de Uvicorn en consecuencia.
 
 ### 4.2 Modelo de Dominio
 
@@ -183,7 +199,8 @@ uvicorn main:app --reload
 
 La entidad `Survey` representa el núcleo del dominio para el feature de encuestas. En Clean Architecture, una entidad encapsula los datos y la lógica de negocio relevante, independiente de frameworks, bases de datos o detalles de infraestructura.
 
-- **Atributos con significado de dominio:**  
+- **Atributos con significado de dominio:**
+
   - `id`: Identificador único, fundamental para la identidad de la encuesta.
   - `title`: Información principal que define la encuesta.
   - `description`: (opcional) Texto descriptivo de la encuesta. Es opcional para dar flexibilidad al usuario y permitir la creación rápida de encuestas, alineándose con la experiencia de usuario de herramientas profesionales y evitando forzar datos irrelevantes.
@@ -191,7 +208,8 @@ La entidad `Survey` representa el núcleo del dominio para el feature de encuest
   - `status`: Usamos un Enum (`SurveyStatus`) para representar el estado de la encuesta (borrador, activa, cerrada). Esto previene errores y facilita validaciones.
   - `questions`: Lista de preguntas asociadas, modelando la relación natural entre encuesta y preguntas.
 
-- **Métodos de negocio:**  
+- **Métodos de negocio:**
+
   - `add_question`: Permite agregar preguntas a la encuesta, reflejando el flujo real de creación.
   - `activate`: Cambia el estado a "activa", pero solo si hay preguntas, asegurando integridad del negocio.
   - `close`: Permite cerrar la encuesta, cambiando su estado.
@@ -205,7 +223,8 @@ La entidad `Survey` representa el núcleo del dominio para el feature de encuest
 - **Claridad y robustez:**  
   Usar Enums para estados y tipos de pregunta evita errores de tipo y facilita migraciones/queries. Los métodos de negocio encapsulan reglas, evitando que la lógica se disperse por el código.
 
-**Justificación arquitectónica:**  
+**Justificación arquitectónica:**
+
 - Separa el “qué” del negocio del “cómo” de la tecnología.
 - Permite que el dominio evolucione sin depender de detalles técnicos.
 - Facilita el testing unitario y la extensión futura.
@@ -219,7 +238,8 @@ La entidad `Survey` es el corazón del feature de encuestas. Modela los datos y 
 
 La entidad `Question` representa el núcleo del dominio para el feature de preguntas dentro de una encuesta. En Clean Architecture, esta entidad encapsula los datos y la lógica de negocio relevante para cada pregunta, manteniéndose independiente de frameworks y detalles técnicos.
 
-- **Atributos con significado de dominio:**  
+- **Atributos con significado de dominio:**
+
   - `id`: Identificador único de la pregunta.
   - `survey_id`: Referencia a la encuesta a la que pertenece.
   - `text`: Texto de la pregunta.
@@ -227,7 +247,8 @@ La entidad `Question` representa el núcleo del dominio para el feature de pregu
   - `options`: Lista de opciones asociadas a la pregunta (solo para preguntas de tipo choice). Cada opción es una entidad propia y se almacena en la tabla `options` para permitir flexibilidad, integridad y escalabilidad.
   - `required`: Indica si la pregunta es obligatoria.
 
-- **Métodos de negocio:**  
+- **Métodos de negocio:**
+
   - `add_option`: Permite agregar opciones a la pregunta, pero solo si es de tipo choice. Encapsula la regla de negocio que restringe opciones a ciertos tipos de pregunta.
 
 - **Independencia de frameworks:**  
@@ -239,7 +260,8 @@ La entidad `Question` representa el núcleo del dominio para el feature de pregu
 - **Claridad y robustez:**  
   Usar Enums para el tipo de pregunta evita errores de tipo y facilita migraciones/queries. Los métodos de negocio encapsulan reglas, evitando que la lógica se disperse por el código.
 
-**Justificación arquitectónica:**  
+**Justificación arquitectónica:**
+
 - Separa el “qué” del negocio del “cómo” de la tecnología.
 - Permite que el dominio evolucione sin depender de detalles técnicos.
 - Facilita el testing unitario y la extensión futura.
@@ -266,6 +288,7 @@ Para la persistencia, se utiliza SQLAlchemy como ORM. En la infraestructura, se 
 - **Relación inversa Question-Option:**  
   Se implementa una tabla `options` relacionada con `questions`, permitiendo la navegación bidireccional entre preguntas y sus opciones. Esto facilita acceder a todas las opciones de una pregunta desde el modelo, mejora la expresividad del ORM y permite operaciones en cascada (por ejemplo, borrar todas las opciones al eliminar una pregunta).  
   Esta relación asegura flexibilidad, integridad referencial y escalabilidad en la gestión de las opciones asociadas a cada pregunta.
+
 ---
 
 ## 5. Frontend: Requerimientos y Setup
@@ -303,11 +326,11 @@ Editar `.env` en frontend y poner tu key de OpenWeatherMap (tengo fallback prepa
 
 ### Backend
 
-- [X] Crear estructura de carpetas feature-based (surveys, questions, etc.) siguiendo Clean + Screaming Architecture.
-- [X] Implementar modelos de dominio y enums en surveys y questions.
-- [X] Desarrollar casos de uso (application) para creación de encuestas y preguntas.
-- [X] Implementar repositorios y acceso a PostgreSQL en infrastructure.
-- [X] Crear endpoints HTTP en la carpeta api (routers FastAPI).
+- [x] Crear estructura de carpetas feature-based (surveys, questions, etc.) siguiendo Clean + Screaming Architecture.
+- [x] Implementar modelos de dominio y enums en surveys y questions.
+- [x] Desarrollar casos de uso (application) para creación de encuestas y preguntas.
+- [x] Implementar repositorios y acceso a PostgreSQL en infrastructure.
+- [x] Crear endpoints HTTP en la carpeta api (routers FastAPI).
 - [ ] Agregar tests unitarios y de integración con Pytest.
 
 ### Frontend
