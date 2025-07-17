@@ -48,5 +48,6 @@ vitest.config.*.timestamp*
 
 /apps/survey-be/.env
 
-   *.pyc
-   **/__pycache__/
+# Python
+__pycache__/
+*.pyc
