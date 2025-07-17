@@ -27,7 +27,7 @@ class Survey:
 
     def activate(self):
         if not self.questions:
-            raise ValueError("No se puede activar una encuesta sin preguntas.")
+            raise ValueError("You can’t activate a survey without questions.")
         self.status = SurveyStatus.ACTIVE
 
     def close(self):

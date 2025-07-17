@@ -7,4 +7,4 @@ class ListSurveysUseCase:
         self.repository = repository
 
     def execute(self) -> List[Survey]:
-        return self.repository.list_surveys()
+        return self.repository.list_all()

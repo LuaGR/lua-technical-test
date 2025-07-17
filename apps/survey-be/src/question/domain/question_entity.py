@@ -5,7 +5,7 @@ from .option_entity import Option
 class Question:
     def __init__(
         self,
-        id: int,
+        id: Optional[ int ],
         survey_id: int,
         text: str,
         question_type: QuestionType,
@@ -24,5 +24,5 @@ class Question:
 
     def add_option(self, option: Option):
         if self.question_type not in [QuestionType.SINGLE_CHOICE, QuestionType.MULTIPLE_CHOICE]:
-            raise ValueError("Solo las preguntas de tipo choice pueden tener opciones.")
+            raise ValueError("Only choice type questions can have options.")
         self.options.append(option)
