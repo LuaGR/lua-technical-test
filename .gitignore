@@ -47,6 +47,7 @@ vite.config.*.timestamp*
 vitest.config.*.timestamp*
 
 /apps/survey-be/.env
+/apps/weather-widget-fe/.env
 
 # Python
 __pycache__/

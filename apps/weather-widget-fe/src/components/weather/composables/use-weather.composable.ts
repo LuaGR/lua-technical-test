@@ -20,7 +20,7 @@ export function useWeather() {
       const res = await fetch(
         `${OPENWEATHER_URL}?q=${encodeURIComponent(
           cityName
-        )}&appid=${OPENWEATHER_API_KEY}&units=metric&lang=es`
+        )}&appid=${OPENWEATHER_API_KEY}&units=metric`
       );
       if (!res.ok) throw new Error('No se encontró la ciudad');
       const data = await res.json();
@@ -48,7 +48,7 @@ export function useWeather() {
         icon: mapWeatherToIcon(data.current_condition[0].weatherDesc[0].value),
       };
     } catch (e) {
-      error.value = 'No se pudo obtener el clima. Intenta con otra ciudad.';
+      error.value = "Can't fetch weather data. Please try again later.";
     } finally {
       loading.value = false;
     }

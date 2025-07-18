@@ -3,16 +3,22 @@
     <Icon :name="icon" :size="48" :color="iconColor" />
     <div class="weather-info__main">
       <div class="weather-info__temp">{{ temperature }}°C</div>
-      <div class="weather-info__city">{{ city }}</div>
-      <div class="weather-info__desc">{{ description }}</div>
+      <div class="weather-info__city">
+        {{ city }}
+      </div>
+      <div class="weather-info__desc">
+        {{ description }}
+      </div>
+      <WeatherMessage :temperature="temperature" />
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, computed } from 'vue';
-import { Icon } from '../../shared';
-import { WeatherInfo } from '../models/weather.model';
+import { Icon } from '../../../shared';
+import { WeatherInfo } from '../../models/weather.model';
+import WeatherMessage from './components/weather-message.vue';
 
 const props = defineProps<WeatherInfo>();
 
