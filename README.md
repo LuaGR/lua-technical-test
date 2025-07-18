@@ -187,7 +187,13 @@ Esto creará un contenedor de PostgreSQL accesible en `localhost:5432` con la ba
 
 ---
 
-## 5. Frontend: Requerimientos y Setup
+## 5. Frontend: Decisiones en la Interfaz y Funcionalidad 
+
+- **Input validado:** El campo de ciudad no permite números y muestra errores solo después de la interacción del usuario, mejorando la experiencia y evitando búsquedas inválidas.
+- **Prevención de búsquedas repetidas:** No permite realizar la misma búsqueda dos veces seguidas, evitando llamadas innecesarias a la API.
+- **Feedback visual inmediato:** El usuario recibe mensajes claros de carga, error y resultados, con feedback visual según la temperatura.
+- **Fallback automático:** Si la API principal falla, el widget consulta automáticamente una API alternativa, asegurando resiliencia y continuidad en la experiencia.
+- **Tipado estricto:** Uso de TypeScript para modelos y props, asegurando robustez y autocompletado.
 
 ## Instrucciones para revisar el frontend
 
