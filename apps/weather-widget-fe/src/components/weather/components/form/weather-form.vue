@@ -3,8 +3,8 @@
     <Input
       id="city"
       v-model="cityModel"
-      label="Ciudad"
-      placeholder="Ingresa una ciudad"
+      label="City"
+      placeholder="Example: New York, Tokyo"
       :required="true"
       :disabled="loading"
       :error="error || undefined"
@@ -18,7 +18,7 @@
         :disabled="!city || loading"
         class="weather-form__button"
       >
-        Buscar
+        Search
       </Button>
     </div>
   </form>

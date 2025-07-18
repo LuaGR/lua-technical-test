@@ -7,7 +7,7 @@
 <script setup lang="ts">
 import { defineProps } from 'vue';
 
-const props = defineProps({
+defineProps({
   message: {
     type: String,
     default: '',

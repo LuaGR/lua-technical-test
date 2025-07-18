@@ -23,7 +23,7 @@
 import { defineProps, defineEmits } from 'vue';
 import { Label, ErrorMessage } from './components';
 
-const props = defineProps({
+defineProps({
   id: {
     type: String,
     required: true,
