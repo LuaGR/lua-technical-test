@@ -1,9 +1,9 @@
 import { ref } from 'vue';
 import { WeatherInfo } from '../models/weather.model';
-
-const OPENWEATHER_API_KEY = import.meta.env.VITE_OPENWEATHER_API_KEY;
-const OPENWEATHER_URL = 'https://api.openweathermap.org/data/2.5/weather';
-const FALLBACK_URL = 'https://wttr.in';
+import {
+  fetchFromOpenWeather,
+  fetchFromFallback,
+} from '../../../services/weather.service';
 
 export function useWeather() {
   const loading = ref(false);
@@ -18,53 +18,20 @@ export function useWeather() {
 
     try {
       try {
-        const res = await fetch(
-          `${OPENWEATHER_URL}?q=${encodeURIComponent(
-            cityName
-          )}&appid=${OPENWEATHER_API_KEY}&units=metric`
-        );
-        if (!res.ok) throw new Error('No se encontró la ciudad');
-        const data = await res.json();
-        weather.value = {
-          city: data.name,
-          temperature: Math.round(data.main.temp),
-          description: data.weather[0].description,
-          icon: mapWeatherToIcon(data.weather[0].main),
-        };
+        weather.value = await fetchFromOpenWeather(cityName);
         return;
       } catch (e) {
-        console.error('Error al consultar OpenWeatherMap, usando fallback:', e);
+        console.error('Error fetching from OpenWeatherMap, using fallback:', e);
       }
 
       try {
-        const res = await fetch(
-          `${FALLBACK_URL}/${encodeURIComponent(cityName)}?format=j1`
-        );
-        if (!res.ok) throw new Error('No se encontró la ciudad');
-        const data = await res.json();
-        weather.value = {
-          city: cityName,
-          temperature: Math.round(Number(data.current_condition[0].temp_C)),
-          description: data.current_condition[0].weatherDesc[0].value,
-          icon: mapWeatherToIcon(
-            data.current_condition[0].weatherDesc[0].value
-          ),
-        };
+        weather.value = await fetchFromFallback(cityName);
       } catch (e) {
         error.value = "Can't fetch weather data. Please try again later.";
       }
     } finally {
       loading.value = false;
     }
-  }
-
-  function mapWeatherToIcon(desc: string): string {
-    const d = desc.toLowerCase();
-    if (d.includes('rain') || d.includes('lluvia')) return 'rain';
-    if (d.includes('cloud') || d.includes('nube')) return 'cloud';
-    if (d.includes('sun') || d.includes('sol')) return 'sun';
-    if (d.includes('clear') || d.includes('despejado')) return 'sun';
-    return 'cloud';
   }
 
   return {
