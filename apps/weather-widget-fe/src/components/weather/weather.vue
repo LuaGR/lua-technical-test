@@ -1,26 +1,31 @@
 <template>
-  <div class="weather-widget__center">
-    <section class="weather-widget">
-      <WeatherForm
-        v-model:city="city"
-        :loading="loading"
-        :error="error"
-        @submit="onSubmit"
-      />
+  <div class="weather-widget__page">
+    <AppHeader>
+      <h1>Weather Widget</h1>
+    </AppHeader>
+    <div class="weather-widget__center">
+      <section class="weather-widget">
+        <WeatherForm
+          v-model:city="city"
+          :loading="loading"
+          :error="error"
+          @submit="onSubmit"
+        />
 
-      <div class="weather-widget__feedback">
-        <Spinner v-if="loading" :size="32" />
-        <ErrorMessage v-else-if="error" :message="error" />
-      </div>
+        <div class="weather-widget__feedback">
+          <Spinner v-if="loading" :size="32" />
+          <ErrorMessage v-else-if="error" :message="error" />
+        </div>
 
-      <WeatherInfo
-        v-if="weather"
-        :city="weather.city"
-        :temperature="weather.temperature"
-        :description="weather.description"
-        :icon="weather.icon"
-      />
-    </section>
+        <WeatherInfo
+          v-if="weather"
+          :city="weather.city"
+          :temperature="weather.temperature"
+          :description="weather.description"
+          :icon="weather.icon"
+        />
+      </section>
+    </div>
   </div>
 </template>
 
@@ -28,6 +33,7 @@
 import { useWeather } from './composables/use-weather.composable';
 import { Spinner, ErrorMessage } from '../shared';
 import { WeatherForm, WeatherInfo } from './components';
+import AppHeader from '../shared/header/header.vue';
 
 const { city, weather, loading, error, fetchWeather } = useWeather();
 
@@ -39,8 +45,17 @@ function onSubmit() {
 </script>
 
 <style scoped>
-.weather-widget__center {
+.weather-widget__page {
   min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  padding-top: 3.5em;
+  padding-bottom: 2.5em;
+  box-sizing: border-box;
+}
+
+.weather-widget__center {
+  flex: 1;
   display: flex;
   align-items: center;
   justify-content: center;

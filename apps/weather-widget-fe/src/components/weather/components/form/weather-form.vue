@@ -26,7 +26,7 @@
 
 <script setup lang="ts">
 import { computed } from 'vue';
-import { Input, Button } from '../../shared';
+import { Input, Button } from '../../../shared';
 
 const props = defineProps<{
   city: string;
