@@ -49,7 +49,7 @@ function onClick(event: MouseEvent) {
 
 <style scoped>
 .btn {
-  padding: 0.5em 1.2em;
+  padding: 0.8em 1.8em;
   border-radius: 4px;
   border: none;
   font-weight: 600;

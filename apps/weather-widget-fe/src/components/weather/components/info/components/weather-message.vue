@@ -17,11 +17,3 @@ const message = computed(() => {
   return 'It’s hot ☀️';
 });
 </script>
-
-<style scoped>
-.weather-message {
-  font-size: 1.1em;
-  margin-top: 0.3em;
-  font-weight: 500;
-}
-</style>

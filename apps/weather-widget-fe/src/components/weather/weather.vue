@@ -1,25 +1,27 @@
 <template>
-  <section class="weather-widget">
-    <WeatherForm
-      v-model:city="city"
-      :loading="loading"
-      :error="error"
-      @submit="onSubmit"
-    />
+  <div class="weather-widget__center">
+    <section class="weather-widget">
+      <WeatherForm
+        v-model:city="city"
+        :loading="loading"
+        :error="error"
+        @submit="onSubmit"
+      />
 
-    <div class="weather-widget__feedback">
-      <Spinner v-if="loading" :size="32" />
-      <ErrorMessage v-else-if="error" :message="error" />
-    </div>
+      <div class="weather-widget__feedback">
+        <Spinner v-if="loading" :size="32" />
+        <ErrorMessage v-else-if="error" :message="error" />
+      </div>
 
-    <WeatherInfo
-      v-if="weather"
-      :city="weather.city"
-      :temperature="weather.temperature"
-      :description="weather.description"
-      :icon="weather.icon"
-    />
-  </section>
+      <WeatherInfo
+        v-if="weather"
+        :city="weather.city"
+        :temperature="weather.temperature"
+        :description="weather.description"
+        :icon="weather.icon"
+      />
+    </section>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -37,16 +39,24 @@ function onSubmit() {
 </script>
 
 <style scoped>
+.weather-widget__center {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .weather-widget {
-  max-width: 350px;
-  margin: 2em auto;
-  padding: 2em 1.5em;
-  border-radius: 12px;
+  max-width: 500px;
+  width: 100%;
+  margin: 0;
+  padding: 3em 2em;
+  border-radius: 16px;
   background: #f7fafd;
-  box-shadow: 0 2px 12px 0 #0001;
+  box-shadow: 0 4px 24px 0 #0002;
   display: flex;
   flex-direction: column;
-  gap: 1.5em;
+  gap: 2em;
 }
 .weather-widget__feedback {
   min-height: 2em;

@@ -1,7 +1,12 @@
 <template>
   <div class="weather-info">
-    <Icon :name="icon" :size="48" :color="iconColor" />
     <div class="weather-info__main">
+      <Icon
+        :name="icon"
+        :size="56"
+        :color="iconColor"
+        class="weather-info__icon"
+      />
       <div class="weather-info__temp">{{ temperature }}°C</div>
       <div class="weather-info__city">
         {{ city }}
@@ -9,6 +14,8 @@
       <div class="weather-info__desc">
         {{ description }}
       </div>
+    </div>
+    <div class="weather-info__message">
       <WeatherMessage :temperature="temperature" />
     </div>
   </div>
@@ -35,25 +42,54 @@ const iconColor = computed(() => {
 <style scoped>
 .weather-info {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 1.5em;
-  padding: 1em 0;
+  justify-content: center;
+  gap: 0.5em;
+  width: 100%;
 }
+
 .weather-info__main {
   display: flex;
   flex-direction: column;
-  gap: 0.2em;
+  align-items: center;
+  gap: 0.3em;
+  width: 100%;
 }
+
+.weather-info__icon {
+  margin-bottom: 0.2em;
+}
+
 .weather-info__temp {
-  font-size: 2.2em;
+  font-size: 2.5em;
   font-weight: bold;
+  text-align: center;
 }
+
 .weather-info__city {
-  font-size: 1.1em;
-  color: #1976d2;
+  font-size: 1.3em;
+  font-weight: 500;
+  text-align: center;
 }
+
 .weather-info__desc {
-  font-size: 1em;
-  color: #757575;
+  font-size: 1.1em;
+  color: #555;
+  text-align: center;
+}
+
+.weather-info__message {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  margin-top: 1.2em;
+}
+
+.weather-info__message .weather-message {
+  font-size: 2em !important;
+  font-weight: 600 !important;
+  text-align: center;
+  color: #1976d2;
 }
 </style>
