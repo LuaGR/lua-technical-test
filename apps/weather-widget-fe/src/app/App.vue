@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import NxWelcome from './NxWelcome.vue';
+import Weather from '../components/weather/weather.vue';
 </script>
 
 <template>
-  <div>Prueba</div>
+  <Weather />
 </template>

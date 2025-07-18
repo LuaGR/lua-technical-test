@@ -11,11 +11,7 @@
 
 <script setup lang="ts">
 import { computed, defineProps } from 'vue';
-import SunIcon from './icons/SunIcon.vue';
-import CloudIcon from './icons/CloudIcon.vue';
-import RainIcon from './icons/RainIcon.vue';
-import ErrorIcon from './icons/ErrorIcon.vue';
-
+import { SunIcon, CloudIcon, RainIcon, ErrorIcon } from './components';
 const props = defineProps({
   name: {
     type: String,
