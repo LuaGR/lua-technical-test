@@ -17,38 +17,42 @@ export function useWeather() {
     weather.value = null;
 
     try {
-      const res = await fetch(
-        `${OPENWEATHER_URL}?q=${encodeURIComponent(
-          cityName
-        )}&appid=${OPENWEATHER_API_KEY}&units=metric`
-      );
-      if (!res.ok) throw new Error('No se encontró la ciudad');
-      const data = await res.json();
-      weather.value = {
-        city: data.name,
-        temperature: Math.round(data.main.temp),
-        description: data.weather[0].description,
-        icon: mapWeatherToIcon(data.weather[0].main),
-      };
-      return;
-    } catch (e) {
-      console.error('Error al consultar OpenWeatherMap, usando fallback:', e);
-    }
+      try {
+        const res = await fetch(
+          `${OPENWEATHER_URL}?q=${encodeURIComponent(
+            cityName
+          )}&appid=${OPENWEATHER_API_KEY}&units=metric`
+        );
+        if (!res.ok) throw new Error('No se encontró la ciudad');
+        const data = await res.json();
+        weather.value = {
+          city: data.name,
+          temperature: Math.round(data.main.temp),
+          description: data.weather[0].description,
+          icon: mapWeatherToIcon(data.weather[0].main),
+        };
+        return;
+      } catch (e) {
+        console.error('Error al consultar OpenWeatherMap, usando fallback:', e);
+      }
 
-    try {
-      const res = await fetch(
-        `${FALLBACK_URL}/${encodeURIComponent(cityName)}?format=j1`
-      );
-      if (!res.ok) throw new Error('No se encontró la ciudad');
-      const data = await res.json();
-      weather.value = {
-        city: cityName,
-        temperature: Math.round(Number(data.current_condition[0].temp_C)),
-        description: data.current_condition[0].weatherDesc[0].value,
-        icon: mapWeatherToIcon(data.current_condition[0].weatherDesc[0].value),
-      };
-    } catch (e) {
-      error.value = "Can't fetch weather data. Please try again later.";
+      try {
+        const res = await fetch(
+          `${FALLBACK_URL}/${encodeURIComponent(cityName)}?format=j1`
+        );
+        if (!res.ok) throw new Error('No se encontró la ciudad');
+        const data = await res.json();
+        weather.value = {
+          city: cityName,
+          temperature: Math.round(Number(data.current_condition[0].temp_C)),
+          description: data.current_condition[0].weatherDesc[0].value,
+          icon: mapWeatherToIcon(
+            data.current_condition[0].weatherDesc[0].value
+          ),
+        };
+      } catch (e) {
+        error.value = "Can't fetch weather data. Please try again later.";
+      }
     } finally {
       loading.value = false;
     }
