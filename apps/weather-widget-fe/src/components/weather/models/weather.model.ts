@@ -4,3 +4,10 @@ export interface WeatherInfo {
   description: string;
   icon: string;
 }
+
+export interface WeatherForm {
+  city: string;
+  loading: boolean;
+  error: string | null;
+  lastSearch?: string;
+}

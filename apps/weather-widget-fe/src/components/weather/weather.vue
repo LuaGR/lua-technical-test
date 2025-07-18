@@ -10,6 +10,7 @@
           v-model:city="city"
           :loading="loading"
           :error="error"
+          :lastSearch="lastSearch"
           @submit="onSubmit"
         />
 
@@ -31,15 +32,19 @@
 </template>
 
 <script setup lang="ts">
+import { ref } from 'vue';
 import { useWeather } from './composables/use-weather.composable';
 import { Spinner, ErrorMessage, Header } from '../shared';
 import { WeatherForm, WeatherInfo } from './components';
 
 const { city, weather, loading, error, fetchWeather } = useWeather();
 
+const lastSearch = ref('');
+
 function onSubmit() {
   if (city.value && !loading.value) {
     fetchWeather(city.value);
+    lastSearch.value = city.value;
   }
 }
 </script>
