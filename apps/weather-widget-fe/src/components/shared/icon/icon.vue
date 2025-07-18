@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-import { computed, defineProps } from 'vue';
+import { Component, computed, defineProps } from 'vue';
 import { SunIcon, CloudIcon, RainIcon, ErrorIcon } from './components';
 const props = defineProps({
   name: {
@@ -31,7 +31,7 @@ const sizePx = computed(() =>
   typeof props.size === 'number' ? `${props.size}px` : props.size
 );
 
-const icons: Record<string, any> = {
+const icons: Record<string, Component> = {
   sun: SunIcon,
   cloud: CloudIcon,
   rain: RainIcon,
