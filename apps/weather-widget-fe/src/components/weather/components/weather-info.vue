@@ -11,7 +11,7 @@
 
 <script setup lang="ts">
 import { defineProps, computed } from 'vue';
-import Icon from '@/components/shared/icon/icon.vue';
+import { Icon } from '../../shared';
 import { WeatherInfo } from '../models/weather.model';
 
 const props = defineProps<WeatherInfo>();
