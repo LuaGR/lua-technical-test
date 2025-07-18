@@ -16,7 +16,7 @@
 }
 
 .app-header ::v-deep h1 {
-  font-size: 2em;
+  font-size: 2.7em;
   font-weight: 700;
   color: #1976d2;
   margin: 0;

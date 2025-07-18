@@ -1,8 +1,9 @@
 <template>
   <div class="weather-widget__page">
-    <AppHeader>
+    <Header>
       <h1>Weather Widget</h1>
-    </AppHeader>
+    </Header>
+
     <div class="weather-widget__center">
       <section class="weather-widget">
         <WeatherForm
@@ -31,9 +32,8 @@
 
 <script setup lang="ts">
 import { useWeather } from './composables/use-weather.composable';
-import { Spinner, ErrorMessage } from '../shared';
+import { Spinner, ErrorMessage, Header } from '../shared';
 import { WeatherForm, WeatherInfo } from './components';
-import AppHeader from '../shared/header/header.vue';
 
 const { city, weather, loading, error, fetchWeather } = useWeather();
 
