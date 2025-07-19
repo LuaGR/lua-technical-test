@@ -1,6 +1,6 @@
 # Survey API & Weather Widget - Arquitectura
 
-¡Buenas! Este proyecto es la solución para una prueba técnica que busca evaluar capacidad de diseño arquitectónico, claridad de código y visión de futuro. Acá te cuento cómo lo estructuré y porqué tomé cada decisión.
+¡Buenas! Este proyecto es mi solución para una prueba técnica en la que quiero reflejar mi enfoque arquitectónico, la claridad del código y cómo preparo todo pensando en el futuro. Aquí te cuento cómo lo estructuré y por qué tomé cada decisión.
 
 ## 1. Overview
 
@@ -55,8 +55,6 @@ Este repo es un **monorepo NX** que contiene dos apps independientes:
 ---
 
 ## 4. Backend
-
-### 4.1 Requerimientos y Setup
 
 ### Decisiones en Endpoints
 
@@ -118,75 +116,6 @@ POST /questions/{question_id}/options
 }
 ```
 
-### Setup
-
-#### 1. Levantar la base de datos con Docker
-
-Asegúrate de tener Docker instalado. Desde la raíz del proyecto, ejecuta:
-
-```bash
-docker-compose up -d
-```
-
-Esto creará un contenedor de PostgreSQL accesible en `localhost:5432` con la base de datos `survey_db`, usuario `postgres` y contraseña `postgres`.
-
----
-
-#### 2. Configurar y correr el backend
-
-1. Ve a la carpeta del backend:
-
-   ```bash
-   cd apps/survey-be
-   ```
-
-2. Crea y activa el entorno virtual:
-
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   ```
-
-3. Instala las dependencias:
-
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-4. Configura la URL de la base de datos en `.env`:
-
-   ```
-   DATABASE_URL=postgresql://postgres:postgres@localhost:5432/survey_db
-   ```
-
-5. Aplica las migraciones para crear las tablas:
-
-   ```bash
-   alembic upgrade head
-   ```
-
-6. Inicia el servidor FastAPI:
-
-   - Si estás en `/apps/survey-be/`:
-     ```bash
-     uvicorn src.main:app --reload
-     ```
-   - O desde `/apps/survey-be/src/`:
-     ```bash
-     uvicorn main:app --reload
-     ```
-
-7. Accede a la documentación interactiva en [http://localhost:8000/docs](http://localhost:8000/docs)
-
----
-
-**Notas:**
-
-- Asegúrate de tener Docker corriendo para la base de datos antes de iniciar el backend.
-- Si cambias la estructura de carpetas, ajusta los comandos de Uvicorn en consecuencia.
-
----
-
 ## 5. Frontend: Decisiones en la Interfaz y Funcionalidad 
 
 - **Input validado:** El campo de ciudad no permite números y muestra errores solo después de la interacción del usuario, mejorando la experiencia y evitando búsquedas inválidas.
@@ -195,17 +124,31 @@ Esto creará un contenedor de PostgreSQL accesible en `localhost:5432` con la ba
 - **Fallback automático:** Si la API principal falla, el widget consulta automáticamente una API alternativa, asegurando resiliencia y continuidad en la experiencia.
 - **Tipado estricto:** Uso de TypeScript para modelos y props, asegurando robustez y autocompletado.
 
-## Instrucciones para revisar el frontend
+## 6. 🚀 Quick Start: Run Everything with Docker
 
-1. Instala dependencias:
+1. Clona el repositorio:
    ```bash
-   cd apps/weather-widget-fe
-   npm install
+   git clone <url-del-repo>
+   cd <carpeta-del-repo>
    ```
 
-2. Inicia el servidor de desarrollo:
+2. Levanta todo el stack (backend, frontend y base de datos):
    ```bash
-   npm run dev
+   docker-compose up --build
    ```
 
-3. (Opcional) Cambia la API Key de OpenWeatherMap en el archivo `.env` si lo deseas.
+   Esto construirá las imágenes, instalará dependencias, aplicará migraciones y levantará todos los servicios.
+
+3. Accede a las aplicaciones:
+   - **Frontend:** [http://localhost:4200](http://localhost:4200)
+   - **Backend (API docs):** [http://localhost:8000/docs](http://localhost:8000/docs)
+
+4. Para detener los servicios:
+   ```bash
+   docker-compose down
+   ```
+
+**Notas:**
+- No necesitas instalar dependencias ni crear archivos `.env` manualmente.
+- Si quieres reiniciar la base de datos desde cero: `docker-compose down -v`
+- Las migraciones se aplican automáticamente al arrancar el backend.
