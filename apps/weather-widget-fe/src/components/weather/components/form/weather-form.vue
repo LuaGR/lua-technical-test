@@ -15,11 +15,10 @@
     <div class="weather-form__button-wrapper">
       <Button
         type="submit"
-        :loading="loading"
         :disabled="!city || loading || !!cityValidationError || isSameSearch"
         class="weather-form__button"
       >
-        Search
+        {{ loading ? 'Loading...' : 'Search' }}
       </Button>
     </div>
   </form>

@@ -13,11 +13,11 @@ import { computed, defineProps } from 'vue';
 const props = defineProps({
   size: {
     type: [Number, String],
-    default: 24, // px
+    default: 24,
   },
   border: {
     type: [Number, String],
-    default: 3, // px
+    default: 3,
   },
   ariaLabel: {
     type: String,
