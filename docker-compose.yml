@@ -12,5 +12,26 @@ services:
     volumes:
       - pgdata:/var/lib/postgresql/data
 
+  backend:
+    build:
+      context: ./apps/survey-be
+    container_name: survey-backend
+    environment:
+      DATABASE_URL: postgresql://postgres:postgres@db:5432/survey_db
+    ports:
+      - '8000:8000'
+    depends_on:
+      - db
+
+  frontend:
+    build:
+      context: .
+      dockerfile: apps/weather-widget-fe/Dockerfile
+    container_name: weather-widget-fe
+    environment:
+      VITE_OPENWEATHER_API_KEY: 0629b5e618ff15728ee39c67a3969712
+    ports:
+      - '4200:4200'
+
 volumes:
   pgdata:

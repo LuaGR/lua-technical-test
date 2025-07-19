@@ -4,6 +4,7 @@ import {
   fetchFromOpenWeather,
   fetchFromFallback,
 } from '../../../services/weather.service';
+import { withTimeout } from '../../../utils/with-timeout';
 
 export function useWeather() {
   const loading = ref(false);
@@ -18,7 +19,7 @@ export function useWeather() {
 
     try {
       try {
-        weather.value = await fetchFromOpenWeather(cityName);
+        weather.value = await withTimeout(fetchFromOpenWeather(cityName), 4000);
         return;
       } catch (e) {
         console.error('Error fetching from OpenWeatherMap, using fallback:', e);

@@ -10,7 +10,8 @@
 </template>
 
 <script setup lang="ts">
-import { Component, computed, defineProps } from 'vue';
+import { computed, defineProps } from 'vue';
+import type { Component } from 'vue';
 import { SunIcon, CloudIcon, RainIcon, ErrorIcon } from './components';
 const props = defineProps({
   name: {
