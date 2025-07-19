@@ -37,9 +37,9 @@ jobs:
       postgres:
         image: postgres:15
         env:
-          POSTGRES_USER: testuser
-          POSTGRES_PASSWORD: testpass
-          POSTGRES_DB: testdb
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+          POSTGRES_DB: survey_db
         ports:
           - 5432:5432
         options: >-
@@ -53,12 +53,17 @@ jobs:
           python-version: '3.11'
       - name: Install dependencies (FastAPI)
         run: |
-          cd apps/fastapi-be
+          cd apps/survey-be
           python -m venv venv
           source venv/bin/activate
           pip install -r requirements.txt
+      - name: Run Alembic migrations
+        run: |
+          cd apps/survey-be
+          source venv/bin/activate
+          alembic upgrade head
       - name: Run FastAPI
         run: |
-          cd apps/fastapi-be
+          cd apps/survey-be/src
+          source ../venv/bin/activate
           uvicorn main:app --host 0.0.0.0 --port 8000 &
-      # Aquí podrías sumar tests en el futuro
