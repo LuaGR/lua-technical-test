@@ -25,7 +25,7 @@ jobs:
       - name: Install dependencies
         run: npm ci --legacy-peer-deps
       - name: Build Vue app
-        run: npx nx build weather-widget-fe
+        run: npx nx build weather-widget-fe --skip-nx-cache
 
   backend:
     name: FastAPI Backend
@@ -58,11 +58,11 @@ jobs:
         run: |
           cd apps/survey-be
           source venv/bin/activate
-          export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/survey_db
+          export DATABASE_URL=postgresql://postgres:postgres@postgres:5432/survey_db
           alembic upgrade head
       - name: Run FastAPI
         run: |
           cd apps/survey-be/src
           source ../venv/bin/activate
-          export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/survey_db
+          export DATABASE_URL=postgresql://postgres:postgres@postgres:5432/survey_db
           uvicorn main:app --host 0.0.0.0 --port 8000 &
