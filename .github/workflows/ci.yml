@@ -14,9 +14,6 @@ jobs:
   frontend:
     name: Build Vue frontend
     runs-on: ubuntu-latest
-    defaults:
-      run:
-        working-directory: apps/weather-widget-fe
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -43,7 +40,7 @@ jobs:
         ports:
           - 5432:5432
         options: >-
-          --health-cmd="pg_isready -U testuser" --health-interval=10s --health-timeout=5s --health-retries=5
+          --health-cmd="pg_isready -U postgres" --health-interval=10s --health-timeout=5s --health-retries=5
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -61,9 +58,11 @@ jobs:
         run: |
           cd apps/survey-be
           source venv/bin/activate
+          export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/survey_db
           alembic upgrade head
       - name: Run FastAPI
         run: |
           cd apps/survey-be/src
           source ../venv/bin/activate
+          export DATABASE_URL=postgresql://postgres:postgres@localhost:5432/survey_db
           uvicorn main:app --host 0.0.0.0 --port 8000 &
